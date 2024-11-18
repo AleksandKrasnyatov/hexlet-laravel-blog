@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@if (Session::has('status'))
+    <div class="alert alert-success">
+        {{ Session::get('status') }}
+    </div>
+@endif
+
 @section('content')
     <h1>Список статей</h1>
     @foreach ($articles as $article)

@@ -12,7 +12,8 @@
 <body>
 <div class="container mt-4">
     <h1>@yield('header')</h1>
-    <a href={{route('articles.index')}}>Статьи</a>
+    <a href={{route('articles.index')}}>Список статей</a>
+    <a href={{route('articles.create')}}>Создать</a>
     <div>
         @yield('content')
     </div>
