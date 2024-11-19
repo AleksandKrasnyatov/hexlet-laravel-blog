@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
 use App\Models\Article;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
@@ -29,12 +29,9 @@ class ArticleController extends Controller
         return view('article.create', compact('article'));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(StorePostRequest $request): RedirectResponse
     {
-        $data = $request->validate([
-            'name' => 'required|unique:articles',
-            'body' => 'required|min:100',
-        ]);
+        $data = $request->validated();
 
         $article = new Article();
         $article->fill($data);
@@ -44,5 +41,22 @@ class ArticleController extends Controller
 
         return redirect()
             ->route('articles.index');
+    }
+
+    public function edit($id): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
+    {
+        $article = Article::findOrFail($id);
+        return view('article.edit', compact('article'));
+    }
+
+    public function update(StorePostRequest $request, $id): RedirectResponse
+    {
+        $article = Article::findOrFail($id);
+        $data = $request->validated();
+
+        $article->fill($data);
+        $article->save();
+        $request->session()->flash('status', 'Статья была успешно обновлена!');
+        return redirect()->route('articles.index');
     }
 }
