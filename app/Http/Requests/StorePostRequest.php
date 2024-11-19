@@ -15,7 +15,7 @@ class StorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => "required|unique:articles,name,{$this->id}",
+            'name' => "required|unique:articles,name,{$this->article?->id}",
             'body' => 'required|min:100',
         ];
     }
